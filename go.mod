@@ -3,12 +3,14 @@ module 101.go
 go 1.16
 
 require (
+	github.com/alexcesaro/mail v0.0.0-20141015155039-29068ce49a17 // indirect
 	github.com/armon/consul-api v0.0.0-20180202201655-eb2c6b5be1b6 // indirect
 	github.com/coreos/go-etcd v2.0.0+incompatible // indirect
 	github.com/gin-gonic/gin v1.7.2 // indirect
 	github.com/go-playground/validator/v10 v10.6.1 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible // indirect
 	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect

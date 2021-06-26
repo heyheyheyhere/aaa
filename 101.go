@@ -4,7 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 
+	"log"
+	"net/smtp"
+
 	_ "github.com/go-sql-driver/mysql"
+
+	"github.com/jordan-wright/email"
 )
 
 const (
@@ -50,10 +55,36 @@ func QueryUser(db *sql.DB, username string) {
 	user := new(User)
 	row := db.QueryRow("select * from users where username=?", username)
 	if err := row.Scan(&user.ID, &user.Username, &user.Password); err != nil {
-		fmt.Printf("映射使用者失敗，原因為：%v\n", err)
+		//InsertUser(db, "1310931031", "s1310931031@nutc.edu.tw")
+		mail(db, "1310931031")
+		fmt.Printf("註冊成功")
 		return
+	} else {
+		fmt.Println("已註冊過了")
 	}
-	fmt.Println("查詢使用者成功", *user)
+
+}
+func mail(db *sql.DB, username string) {
+	//user := new(User)
+	sql := fmt.Sprintf("select password from users where username=?", username)
+	//row := db.("select * from users where username=?", mail)
+	//if err := row.Scan(&user.ID, &user.Username, &user.Password); err != nil {
+	//fmt.Printf("映射使用者失敗，原因為：%v\n", err)
+	//return
+	//}
+	//fmt.Println("查詢使用者成功", *user)
+	e := email.NewEmail()
+	e.From = "<jim887576@gmail.com>"
+	//mail := []string{"s1310931031@nutc.edu.tw"}
+	e.To = []string{sql}
+	//e.Cc = []string{"test1@126.com", "test2@126.com"}
+	//e.Bcc = []string{"secret@126.com"}
+	e.Subject = "嘿嘿嘿在這兒"
+	e.Text = []byte("黑在黑在我是柏睿")
+	err := e.Send("smtp.gmail.com:587", smtp.PlainAuth("", "jim887576@gmail.com", "bbjgrxgvsqwiiatg", "smtp.gmail.com"))
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 func main() {
 	conn := fmt.Sprintf("%s:%s@%s(%s:%d)/%s", USERNAME, PASSWORD, NETWORK, SERVER, PORT, DATABASE)
@@ -66,8 +97,9 @@ func main() {
 		fmt.Println("資料庫連線錯誤，原因為：", err.Error())
 		return
 	}
+
 	defer db.Close()
 	CreateTable(db)
-	InsertUser(db, "1aaa", "123")
-	QueryUser(db, "test")
+	//InsertUser(db, "1310931031", "s1310931031@nutc.edu.tw")
+	QueryUser(db, "1310931031")
 }
